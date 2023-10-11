@@ -9,7 +9,7 @@ from django.db.models import Q
 from .models import Movie
 from .serializers import MovieSerializer
 from .permissions import IsOwnerOrReadOnly
-
+from rest_framework.permissions import IsAuthenticated 
 
 class GenreList(generics.ListCreateAPIView):
     queryset = Genre.objects.all()
@@ -21,16 +21,11 @@ class DirectorList(generics.ListCreateAPIView):
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
 
+class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = MovieSerializer
+    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]
+    queryset = Movie.objects.all()
 
-
-# views.py
-
-from rest_framework import generics
-from django.db.models import Q
-from .models import Movie
-from .serializers import MovieSerializer
-from .permissions import IsOwnerOrReadOnly
-from rest_framework.permissions import IsAuthenticated  # Импортируйте IsAuthenticated
 
 class MovieList(generics.ListCreateAPIView):
     serializer_class = MovieSerializer
